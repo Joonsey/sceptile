@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "sceptile"
+version = "0.1.0"
+description = ""
+authors = ["Johannes <johannes.ronning@outlook.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+torch = "^2.3.1"
+torchvision = "^0.18.1"
+matplotlib = "^3.9.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
