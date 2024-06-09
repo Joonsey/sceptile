@@ -73,7 +73,8 @@ class SimpleCNN(nn.Module):
     @staticmethod
     def load(path: str, features: int, device: torch.device):
         model = SimpleCNN(features, device=device)
-        model.load_state_dict(torch.load(path))
+        model.load_state_dict(
+            torch.load(path, map_location=device))
 
         return model
 

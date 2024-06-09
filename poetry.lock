@@ -1292,4 +1292,4 @@ pyzmq = "*"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "5db3dae7662321e3465467515ff61f654733a13c56b6469942db1e2c76fbef87"
+content-hash = "0f8ded88ea3cf3415325741fc2955a3382a33cdcd7b6299f57fadba2d619ad0d"

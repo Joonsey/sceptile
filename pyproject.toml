@@ -7,12 +7,13 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-torch = "^2.3.1"
-torchvision = "^0.18.1"
 matplotlib = "^3.9.0"
 zmq = "^0.0.0"
 httpx = "^0.27.0"
 
+[tool.poetry.dev-dependencies]
+torch = "^2.3.1"
+torchvision = "^0.18.1"
 
 [build-system]
 requires = ["poetry-core"]

@@ -4,18 +4,13 @@ FROM python:3.11-slim-buster
 # Set the working directory in the container
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock /app/
+COPY . /app
 
-run pip install poetry
+RUN pip install poetry
 
-# Install the ZeroMQ library
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-dev --no-interaction --no-ansi
+RUN poetry install --no-root --only main
 
-# Copy the current directory contents into the container at /app
-COPY model /app
-COPY out /app
-COPY server.py /app
+RUN poetry run python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 
 # Make port 5555 available to the world outside this container
 EXPOSE 5555
