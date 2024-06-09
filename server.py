@@ -14,11 +14,15 @@ class SceptileServer:
         self.socket = context.socket(zmq.REP)
         self.socket.bind("tcp://*:5555")
 
+        print('running!')
+
     def run(self):
         while True:
             message = self.socket.recv()
+            print(f'got message: {message}')
             l = self.model.predict_image(message.decode(), model.PlantVillageDataset.transform)
             r = self.features[int(l)]
+            print(f'result: {r}')
             self.socket.send(r.encode())
 
 server = SceptileServer()
