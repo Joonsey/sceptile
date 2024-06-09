@@ -1,5 +1,7 @@
+from io import BytesIO
 import os
 
+import httpx
 import torch
 import torchvision.transforms as transforms
 
@@ -76,7 +78,11 @@ class SimpleCNN(nn.Module):
         return model
 
     def predict_image(self, image_path: str, transform) -> float:
-        image = Image.open(image_path).convert("RGB")
+        with httpx.Client() as client:
+            response = client.get(image_path)
+            image_data = BytesIO(response.content)
+
+        image = Image.open(image_data ).convert("RGB")
         image = transform(image).unsqueeze(0)
         image = image.to(self.device)
 
