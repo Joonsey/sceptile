@@ -4,6 +4,8 @@ import model
 
 module_dir = os.path.dirname(os.path.abspath(__file__))
 
+from interface import ComTypes, SEPERATOR
+
 
 class SceptileServer:
     def __init__(self) -> None:
@@ -16,14 +18,33 @@ class SceptileServer:
 
         print('running!')
 
+    def send(self, prefix: ComTypes, message: str) -> None:
+        self.socket.send(f"{prefix}{SEPERATOR}{message}".encode())
+
+    def recv(self) -> tuple[str, str]:
+        message = self.socket.recv()
+        print(f'got message: {message}')
+        sign, message = message.decode().split(SEPERATOR)
+        return sign, message
+
     def run(self):
         while True:
             message = self.socket.recv()
             print(f'got message: {message}')
-            l = self.model.predict_image(message.decode(), model.PlantVillageDataset.transform)
-            r = self.features[int(l)]
-            print(f'result: {r}')
-            self.socket.send(r.encode())
+            sign, message = message.decode().split(SEPERATOR)
+            if sign == ComTypes.PREDICT:
+                try:
+                    l = self.model.predict_image(message, model.PlantVillageDataset.transform)
+                    r = self.features[int(l)]
+                    print(f'result: {r}')
+                    self.send(ComTypes.RESULT, r)
+                except Exception as e:
+                    print(f'error: {e}')
+                    self.send(ComTypes.ERROR, e.__str__())
+
+            if sign == ComTypes.HEALTH:
+                self.send(ComTypes.HEALTH, "healthy!")
+
 
 server = SceptileServer()
 server.run()
